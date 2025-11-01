@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  mysql-db:
+    image: mysql:8.4
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: placements
+      MYSQL_USER: shreya
+      MYSQL_PASSWORD: shreya123
+    ports:
+      - "3307:3306"
+
+  springboot-app:
+    build: .
+    container_name: springboot-app
+    depends_on:
+      - mysql-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/placements
+      SPRING_DATASOURCE_USERNAME: shreya
+      SPRING_DATASOURCE_PASSWORD: shreya123
+    ports:
+      - "8080:8080"
+    restart: on-failure
